@@ -1,4 +1,4 @@
-Warning! All of the code was mainly written in Hungarian language.
-This game was made by Ruszó Márton Szebasztián,
-I'm a beginner in coding.
-Please, enjoy my Tic-Tac-Toe Game :D
+Magyar HTML Tic-Tac-Toe Játék!
+Készítette: Ruszó Márton Szebasztián.
+CSS, JavaScript beépítve a HTML fájlban.
+Az animációk linkről lettek beimportálva!
