@@ -1,0 +1,932 @@
+<html lang="hu">
+<meta charset="UTF-8">
+<head><title>Amőba Játék</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<style>
+body{
+margin-top:50px;
+margin-bottom:50px;
+background-image:url('bg.jpg');
+background-size:cover;
+background-position:center;
+}
+
+.negyzetek{
+height:75px;
+width:75px;
+border:rgba(229, 19, 114) solid 5px;
+border-radius:10px;
+text-align:center;
+justify-content:center;
+font-size:50px;
+font-family:Arial, Helvetica, sans-serif;
+font-weight:bold;
+color:white;
+box-shadow:3px 3px black;
+text-shadow:3px 3px black;
+}
+
+.negyzetek:hover{
+background-color:rgba(229, 19, 114, 0.25);
+cursor:pointer;
+}
+
+.tabla{
+margin:50px auto 50px auto;
+}
+
+.doboz{
+background-color:rgba(255, 255, 255, 0.5);
+border-radius:15px;
+width:50%;
+margin-left:auto;
+margin-right:auto;
+padding:20px 50px 20px 50px;
+box-shadow:15px 15px rgba(0, 0, 0, 0.5);
+}
+
+.kikezdjeszoveg{
+font-family:Arial, Helvetica, sans-serif;
+font-size:35px;
+color:rgb(234, 177, 63);
+font-weight:bold;
+text-shadow:2px 2px black;
+}
+
+#xpontszoveg{
+font-family:Arial, Helvetica, sans-serif;
+font-size:25px;
+color:rgb(234, 177, 63);
+font-weight:bold;
+text-shadow:2px 2px black;
+}
+
+#opontszoveg{
+font-family:Arial, Helvetica, sans-serif;
+font-size:25px;
+color:rgb(234, 177, 63);
+font-weight:bold;
+text-shadow:2px 2px black;
+}
+
+.pontokszoveg{
+font-family:Arial, Helvetica, sans-serif;
+font-size:30px;
+color:rgb(234, 177, 63);
+font-weight:bold;
+text-shadow:2px 2px black;
+}
+
+.pontokszoveg2{
+font-family:Arial, Helvetica, sans-serif;
+font-size:35px;
+color:rgba(229, 19, 114);
+font-weight:bold;
+text-shadow:2px 2px black;
+}
+
+.gomb{
+cursor:pointer;
+padding:10px;
+border-radius:10px;
+color:white;
+font-weight:bold;
+font-size:20px;
+margin:20px 10px 20px 10px;
+box-shadow:2px 2px rgba(0, 0, 0, 0.5);
+}
+
+#random{
+background-color:rgba(229, 19, 114);
+text-shadow:2px 2px black;
+}
+
+#O{
+background-color:rgba(234, 177, 63);
+text-shadow:2px 2px black;
+}
+
+#X{
+background-color:rgba(234, 177, 63);
+text-shadow:2px 2px black;
+}
+
+#X:hover{
+background-color:rgba(234, 177, 63, 0.5);
+}
+
+#O:hover{
+background-color:rgba(234, 177, 63, 0.5);
+}
+
+#random:hover{
+background-color:rgba(229, 19, 114, 0.5);
+}
+
+#ujjatek{
+background-color:rgba(229, 19, 114);
+text-shadow:2px 2px black;
+}
+
+#ujjatek:hover{
+background-color:rgba(229, 19, 114, 0.5);
+}
+
+#pontreset{
+background-color:rgba(229, 19, 114);
+text-shadow:2px 2px black;
+}
+
+.negyzetek:hover{
+animation:pulse;
+animation-duration:1s;
+}
+
+#pontreset:hover{
+background-color:rgba(229, 19, 114, 0.5);
+}
+
+#h1{
+font-family:Arial, Helvetica, sans-serif;
+font-size:75px;
+color:rgb(234, 177, 63);
+font-weight:bold;
+text-shadow:3px 3px black;
+text-align:center;
+}
+</style>
+</head>
+<body>
+<div class="doboz">
+<h1 id="h1">Tic-Tac-Toe</h1>
+<table class="tabla">
+<tr><td class="negyzetek" id="1negyzet"></td><td class="negyzetek" id="2negyzet"></td><td class="negyzetek" id="3negyzet"></td></tr>
+<tr><td class="negyzetek" id="4negyzet"></td><td class="negyzetek" id="5negyzet"></td><td class="negyzetek" id="6negyzet"></td></tr>
+<tr><td class="negyzetek" id="7negyzet"></td><td class="negyzetek" id="8negyzet"></td><td class="negyzetek" id="9negyzet"></td></tr>
+</table>
+<p class="kikezdjeszoveg" id="kikezdi">Ki kezdje a játékot?</p>
+<div class="gombok">
+<button class="gomb" id="X" onclick="xkezd()">X</button> <button class="gomb" id="random" onclick="veletlenkezd()">Véletlen</button> <button class="gomb" id="O" onclick="okezd()">O</button>
+</div>
+<button class="gomb" id="ujjatek" onclick="ujjatek()">Új Játék</button>
+<button class="gomb" id="pontreset" onclick="pontreset()">Pont Reset</button>
+<p class="pontokszoveg2" id="pontokszoveg">Pontok:</p>
+<p class="pontokszoveg" id="xpontszoveg">X: 0 pont</p>
+<p class="pontokszoveg" id="opontszoveg">O: 0 pont</p>
+</div>
+<script>
+const negyzet1=document.getElementById("1negyzet");
+const negyzet2=document.getElementById("2negyzet");
+const negyzet3=document.getElementById("3negyzet");
+const negyzet4=document.getElementById("4negyzet");
+const negyzet5=document.getElementById("5negyzet");
+const negyzet6=document.getElementById("6negyzet");
+const negyzet7=document.getElementById("7negyzet");
+const negyzet8=document.getElementById("8negyzet");
+const negyzet9=document.getElementById("9negyzet");
+let xvagyo="X";
+let xpontok=0;
+let opontok=0;
+let kattintasokszama=0;
+
+function jatekkezdes(){
+negyzet1.onclick=function() {kattintva1()};
+negyzet2.onclick=function() {kattintva2()};
+negyzet3.onclick=function() {kattintva3()};
+negyzet4.onclick=function() {kattintva4()};
+negyzet5.onclick=function() {kattintva5()};
+negyzet6.onclick=function() {kattintva6()};
+negyzet7.onclick=function() {kattintva7()};
+negyzet8.onclick=function() {kattintva8()};
+negyzet9.onclick=function() {kattintva9()};
+}
+
+function xkezd(){
+jatekkezdes();
+document.getElementById('X').style.animation="pulse";
+document.getElementById('X').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('X').style.animation="";
+document.getElementById('X').style.animationDuration="";
+}, 2001);
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+xvagyo="X";
+var xgomb=document.getElementById('X');
+xgomb.disabled=true;
+var ogomb=document.getElementById('O');
+ogomb.disabled=true;
+var veletlengomb=document.getElementById('random');
+veletlengomb.disabled=true;
+setTimeout(function(){
+document.getElementById('kikezdi').innerText="X következik!";
+}, 500);
+}
+
+function okezd(){
+jatekkezdes();
+document.getElementById('O').style.animation="pulse";
+document.getElementById('O').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('O').style.animation="";
+document.getElementById('O').style.animationDuration="";
+}, 2001);
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+xvagyo="O";
+var ogomb=document.getElementById('O');
+ogomb.disabled=true;
+var xgomb=document.getElementById('X');
+xgomb.disabled=true;
+var veletlengomb=document.getElementById('random');
+veletlengomb.disabled=true;
+setTimeout(function(){
+document.getElementById('kikezdi').innerText="O következik!";
+}, 500);
+}
+
+function veletlenkezd(){
+jatekkezdes();
+document.getElementById('random').style.animation="pulse";
+document.getElementById('random').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('random').style.animation="";
+document.getElementById('random').style.animationDuration="";
+}, 2001);
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+const vszam = Math.floor(Math.random() * 2) + 1;
+if(vszam===1){
+xvagyo="X";
+var xgomb=document.getElementById('X');
+xgomb.disabled=true;
+var ogomb=document.getElementById('O');
+ogomb.disabled=true;
+var veletlengomb=document.getElementById('random');
+veletlengomb.disabled=true;
+setTimeout(function(){
+document.getElementById('kikezdi').innerText="X következik!";
+}, 500);
+} else {
+xvagyo="O"
+var ogomb=document.getElementById('O');
+ogomb.disabled=true;
+var xgomb=document.getElementById('X');
+xgomb.disabled=true;
+var veletlengomb=document.getElementById('random');
+veletlengomb.disabled=true;
+setTimeout(function(){
+document.getElementById('kikezdi').innerText="O következik!";
+}, 500);
+}
+}
+
+//1-2-3, 4-5-6, 7-8-9, 1-4-7, 2-5-8, 3-6-9, 1-5-9, 3-5-7
+
+function nyerte(){
+let nyeroszoveg=document.getElementById("kikezdi");
+if(
+negyzet1.innerText==="X" &&
+negyzet2.innerText==="X" &&
+negyzet3.innerText==="X"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="X nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet1.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet2.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet3.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+xpontok++;
+document.getElementById('xpontszoveg').innerText="X: "+xpontok+" pont";
+return;
+}
+if(
+negyzet4.innerText==="X" &&
+negyzet5.innerText==="X" &&
+negyzet6.innerText==="X"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="X nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet4.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet5.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet6.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+xpontok++;
+document.getElementById('xpontszoveg').innerText="X: "+xpontok+" pont";
+return;
+}
+if(
+negyzet7.innerText==="X" &&
+negyzet8.innerText==="X" &&
+negyzet9.innerText==="X"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="X nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet7.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet8.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet9.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+xpontok++;
+document.getElementById('xpontszoveg').innerText="X: "+xpontok+" pont";
+return;
+}
+if(
+negyzet1.innerText==="X" &&
+negyzet4.innerText==="X" &&
+negyzet7.innerText==="X"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="X nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet1.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet4.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet7.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+xpontok++;
+document.getElementById('xpontszoveg').innerText="X: "+xpontok+" pont";
+return;
+}
+if(
+negyzet2.innerText==="X" &&
+negyzet5.innerText==="X" &&
+negyzet8.innerText==="X"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="X nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet2.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet5.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet8.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+xpontok++;
+document.getElementById('xpontszoveg').innerText="X: "+xpontok+" pont";
+return;
+}
+if(
+negyzet3.innerText==="X" &&
+negyzet6.innerText==="X" &&
+negyzet9.innerText==="X"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="X nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet3.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet6.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet9.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+xpontok++;
+document.getElementById('xpontszoveg').innerText="X: "+xpontok+" pont";
+return;
+}
+if(
+negyzet1.innerText==="X" &&
+negyzet5.innerText==="X" &&
+negyzet9.innerText==="X"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="X nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet1.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet5.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet9.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+xpontok++;
+document.getElementById('xpontszoveg').innerText="X: "+xpontok+" pont";
+return;
+}
+if(
+negyzet3.innerText==="X" &&
+negyzet5.innerText==="X" &&
+negyzet7.innerText==="X"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="X nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet3.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet5.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet7.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+xpontok++;
+document.getElementById('xpontszoveg').innerText="X: "+xpontok+" pont";
+return;
+}
+
+if(
+negyzet1.innerText==="O" &&
+negyzet2.innerText==="O" &&
+negyzet3.innerText==="O"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="O nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet1.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet2.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet3.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+opontok++;
+document.getElementById('opontszoveg').innerText="O: "+opontok+" pont";
+return;
+}
+if(
+negyzet4.innerText==="O" &&
+negyzet5.innerText==="O" &&
+negyzet6.innerText==="O"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="O nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet4.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet5.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet6.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+opontok++;
+document.getElementById('opontszoveg').innerText="O: "+opontok+" pont";
+return;
+}
+if(
+negyzet7.innerText==="O" &&
+negyzet8.innerText==="O" &&
+negyzet9.innerText==="O"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="O nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet7.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet8.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet9.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+opontok++;
+document.getElementById('opontszoveg').innerText="O: "+opontok+" pont";
+return;
+}
+if(
+negyzet1.innerText==="O" &&
+negyzet4.innerText==="O" &&
+negyzet7.innerText==="O"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="O nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet1.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet4.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet7.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+opontok++;
+document.getElementById('opontszoveg').innerText="O: "+opontok+" pont";
+return;
+}
+if(
+negyzet2.innerText==="O" &&
+negyzet5.innerText==="O" &&
+negyzet8.innerText==="O"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="O nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet2.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet5.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet8.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+opontok++;
+document.getElementById('opontszoveg').innerText="O: "+opontok+" pont";
+return;
+}
+if(
+negyzet3.innerText==="O" &&
+negyzet6.innerText==="O" &&
+negyzet9.innerText==="O"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="O nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet3.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet6.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet9.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+opontok++;
+document.getElementById('opontszoveg').innerText="O: "+opontok+" pont";
+return;
+}
+if(
+negyzet1.innerText==="O" &&
+negyzet5.innerText==="O" &&
+negyzet9.innerText==="O"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="O nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet1.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet5.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet9.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+opontok++;
+document.getElementById('opontszoveg').innerText="O: "+opontok+" pont";
+return;
+}
+if(
+negyzet3.innerText==="O" &&
+negyzet5.innerText==="O" &&
+negyzet7.innerText==="O"
+){
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="O nyert!";
+}, 500);
+for(i=1;9>=i;i++){
+const negyzetek=document.getElementById(i+'negyzet');
+negyzetek.onclick="";
+negyzetek.style.animation="rubberBand";
+negyzetek.style.animationDuration="2s";
+}
+negyzet3.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet5.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+negyzet7.style.backgroundColor="rgba(234, 177, 63, 0.5)";
+opontok++;
+document.getElementById('opontszoveg').innerText="O: "+opontok+" pont";
+return;
+}
+
+if(kattintasokszama===9)
+{
+document.getElementById('kikezdi').style.animation="jello";
+document.getElementById('kikezdi').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('kikezdi').style.animation="";
+document.getElementById('kikezdi').style.animationDuration="";
+}, 2001);
+setTimeout(function(){
+nyeroszoveg.innerText="Döntetlen!";
+}, 500);
+for(let i=1; i<= 9; i++){
+    const negyzetek = document.getElementById(i+"negyzet");
+    negyzetek.style.backgroundColor="rgba(229, 19, 114, 0.5)";
+    negyzetek.onclick="";
+    negyzetek.style.animation="flash";
+    negyzetek.style.animationDuration="2s";
+}
+}
+}
+
+const jatekosvaltas = () => {
+    return xvagyo === "X" ? "O" : "X"
+}
+
+function kattintva1(){
+if (negyzet1.innerText === '') {
+            negyzet1.innerText = xvagyo;
+            xvagyo = jatekosvaltas();
+            document.getElementById('kikezdi').innerText=""+xvagyo+" következik!";
+            kattintasokszama++;
+            nyerte();
+}
+}
+
+function kattintva2(){
+if (negyzet2.innerText === '') {
+            negyzet2.innerText = xvagyo;
+            xvagyo = jatekosvaltas();
+            document.getElementById('kikezdi').innerText=""+xvagyo+" következik!";
+            kattintasokszama++;
+            nyerte();
+}
+}
+
+function kattintva3(){
+if (negyzet3.innerText === '') {
+            negyzet3.innerText = xvagyo;
+            xvagyo = jatekosvaltas();
+            document.getElementById('kikezdi').innerText=""+xvagyo+" következik!";
+            kattintasokszama++;
+            nyerte();
+}
+}
+
+function kattintva4(){
+if (negyzet4.innerText === '') {
+            negyzet4.innerText = xvagyo;
+            xvagyo = jatekosvaltas();
+            document.getElementById('kikezdi').innerText=""+xvagyo+" következik!";
+            kattintasokszama++;
+            nyerte();
+}
+}
+
+function kattintva5(){
+if (negyzet5.innerText === '') {
+            negyzet5.innerText = xvagyo;
+            xvagyo = jatekosvaltas();
+            document.getElementById('kikezdi').innerText=""+xvagyo+" következik!";
+            kattintasokszama++;
+            nyerte();
+}
+}
+
+function kattintva6(){
+if (negyzet6.innerText === '') {
+            negyzet6.innerText = xvagyo;
+            xvagyo = jatekosvaltas();
+            document.getElementById('kikezdi').innerText=""+xvagyo+" következik!";
+            kattintasokszama++;
+            nyerte();
+}
+}
+
+function kattintva7(){
+if (negyzet7.innerText === '') {
+            negyzet7.innerText = xvagyo;
+            xvagyo = jatekosvaltas();
+            document.getElementById('kikezdi').innerText=""+xvagyo+" következik!";
+            kattintasokszama++;
+            nyerte();
+}
+}
+
+function kattintva8(){
+if (negyzet8.innerText === '') {
+            negyzet8.innerText = xvagyo;
+            xvagyo = jatekosvaltas();
+            document.getElementById('kikezdi').innerText=""+xvagyo+" következik!";
+            kattintasokszama++;
+            nyerte();
+}
+}
+
+function kattintva9(){
+if (negyzet9.innerText === '') {
+            negyzet9.innerText = xvagyo;
+            xvagyo = jatekosvaltas();
+            document.getElementById('kikezdi').innerText=""+xvagyo+" következik!";
+            kattintasokszama++;
+            nyerte();
+}
+}
+
+function ujjatek(){
+    for(let i=1; i<= 9; i++){
+        const negyzetek = document.getElementById(i+"negyzet");
+        setTimeout(function(){
+        negyzetek.innerText="";
+        negyzetek.style.backgroundColor="";
+        }, 500);
+        negyzetek.style.animation="shakeX";
+        negyzetek.style.animationDuration="2s";
+        setTimeout(function(){
+        negyzetek.style.animation="";
+        negyzetek.style.animationDuration="";   
+        }, 2001);
+    }
+    xvagyo="X";
+    kattintasokszama=0;
+    document.getElementById('kikezdi').style.animation="jello";
+    document.getElementById('kikezdi').style.animationDuration="2s";
+    setTimeout(function(){
+    document.getElementById('kikezdi').style.animation="";
+    document.getElementById('kikezdi').style.animationDuration="";
+    }, 2001);
+    setTimeout(function(){
+    document.getElementById('kikezdi').innerText="Ki kezdje a játékot?";
+    }, 500);
+    document.getElementById('O').disabled=false;
+    document.getElementById('X').disabled=false;
+    document.getElementById('random').disabled=false;
+    document.getElementById('h1').style.animation="bounce";
+    document.getElementById('h1').style.animationDuration="2s";
+    setTimeout(function(){
+    document.getElementById('h1').style.animation="";
+    document.getElementById('h1').style.animationDuration="";
+    }, 2001);
+    document.getElementById('ujjatek').style.animation="pulse";
+    document.getElementById('ujjatek').style.animationDuration="2s";
+    setTimeout(function(){
+    document.getElementById('ujjatek').style.animation="";
+    document.getElementById('ujjatek').style.animationDuration="";
+    }, 2001);
+}
+
+function pontreset(){
+opontok=0;
+xpontok=0;
+setTimeout(function(){
+document.getElementById('xpontszoveg').innerText="X: 0 pont";
+document.getElementById('opontszoveg').innerText="O: 0 pont";
+}, 1500);
+document.getElementById('pontreset').style.animation="pulse";
+document.getElementById('pontreset').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('pontreset').style.animation="";
+document.getElementById('pontreset').style.animationDuration="";
+}, 2001);
+document.getElementById('xpontszoveg').style.animation="flash";
+document.getElementById('xpontszoveg').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('xpontszoveg').style.animation="";
+document.getElementById('xpontszoveg').style.animationDuration="";
+}, 2001);
+document.getElementById('opontszoveg').style.animation="flash";
+document.getElementById('opontszoveg').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('opontszoveg').style.animation="";
+document.getElementById('opontszoveg').style.animationDuration="";
+}, 2001);
+document.getElementById('pontokszoveg').style.animation="flip";
+document.getElementById('pontokszoveg').style.animationDuration="2s";
+setTimeout(function(){
+document.getElementById('pontokszoveg').style.animation="";
+document.getElementById('pontokszoveg').style.animationDuration="";
+}, 2001);
+}
+
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+document.onkeydown = (e) => {
+    if (event.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+        return false;
+    }
+};
+</script>
+</body>
+</html>
